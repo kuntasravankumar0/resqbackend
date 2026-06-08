@@ -24,6 +24,8 @@ REFRESH_EXPIRE_DAYS = 30
 CORS_ORIGINS = {
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://resqfrontend.vercel.app",
+    "https://resqbackend.vercel.app",
     os.environ.get("FRONTEND_URL", ""),
 }
 
@@ -775,10 +777,12 @@ app = FastAPI(title="Employee Management API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=sorted(CORS_ORIGINS),
+    allow_origins=[o for o in sorted(CORS_ORIGINS) if o],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=86400,
 )
 
 
